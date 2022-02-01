@@ -4,11 +4,6 @@ body {
   font-size: min(1em, calc(2.8vw));
 }
 
-/* html {
-  display: flex;
-  justify-content: center;
-} */
-
 .App {
   min-height: 100vh;
   display: flex;

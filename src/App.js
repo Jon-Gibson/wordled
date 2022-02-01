@@ -263,7 +263,7 @@ const App = (props) => {
 
   return (
     <div className="App">
-      <h1 className="title">WORDLER</h1>
+      <h1 className="title">WORDLED</h1>
       <div className="board">
         <div>
           {guesses.map((g, i) => (
