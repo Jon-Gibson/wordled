@@ -1,38 +1,163 @@
+body {
+  justify-content: center;
+  background-color: #121213;
+  font-size: min(1em, calc(2.8vw));
+}
+
+/* html {
+  display: flex;
+  justify-content: center;
+} */
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
+  text-align: center;
   flex-direction: column;
+  color: #d7dadc;
+  align-items: center;
+}
+
+.board {
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  display: flex;
+}
+
+.title {
+  margin-top: 0;
+  width: 80%;
+  font-size: 2.5em;
+  letter-spacing: 0.1em;
+  padding-bottom: 0.1em;
+  font-weight: 600;
+  border-bottom: 1px solid #3a3a3c;
+  max-width: 600px;
+}
+
+.answer {
+  position: fixed;
+  top: 6em;
+  background: #d7dadc;
+  padding: 1em;
+  display: flex;
+  text-transform: uppercase;
+  border-radius: 0.5em;
+  letter-spacing: 0.1em;
+  font-weight: bold;
+  color: #121213;
+}
+
+.guess {
+  display: flex;
+  gap: 0.6em;
+  margin-bottom: 0.6em;
+}
+
+.letter {
+  display: flex;
+  height: 2em;
+  width: 2em;
+  outline: solid #3a3a3c 2px;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  text-transform: capitalize;
+  font-weight: bold;
+  font-size: 2em;
+  /* max-width: calc(13vw);
+  max-height: calc(13vw); */
+}
+.letter.wrong {
+  background-color: #3a3a3c;
+}
+.letter.correct {
+  background-color: #538d4e;
+}
+.letter.misplaced {
+  background-color: #b5933b;
 }
 
-.App-link {
-  color: #61dafb;
+.keyRow {
+  display: flex;
+  gap: 0.4em;
+  margin-bottom: 0.5em;
+}
+.keyRow.row2 {
+  margin-left: 2em;
+}
+.keyRow.row3 {
+  margin-left: 0em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.key {
+  background-color: #818384;
+  color: #d7dadc;
+  border: none;
+  border-radius: 0.2em;
+  font-size: 1em;
+  height: 4em;
+  width: 3em;
+  font-weight: bold;
+}
+.key.enter,
+.key.backspace {
+  width: 5em;
+}
+.key.wrong {
+  background-color: #3a3a3c;
+}
+.key.correct {
+  background-color: #538d4e;
+}
+.key.misplaced {
+  background-color: #b5933b;
+}
+
+.letter.wrong,
+.letter.correct,
+.letter.misplaced {
+  animation-name: FlipIn;
+  animation-duration: 500ms;
+  animation-timing-function: ease-in;
+}
+
+@keyframes FlipIn {
+  0% {
+    transform: rotateX(0);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
+}
+
+[data-animation="shake"] {
+  animation-name: Shake;
+  animation-duration: 600ms;
+}
+
+@keyframes Shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translateX(-4px);
+  }
+
+  40%,
+  60% {
+    transform: translateX(4px);
   }
 }
