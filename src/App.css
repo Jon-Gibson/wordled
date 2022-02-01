@@ -44,6 +44,19 @@ body {
   color: #121213;
 }
 
+.winModal {
+  position: fixed;
+  top: 6em;
+  background: #d7dadc;
+  padding: 1em;
+  display: flex;
+  text-transform: uppercase;
+  border-radius: 0.5em;
+  letter-spacing: 0.1em;
+  font-weight: bold;
+  color: #121213;
+}
+
 .guess {
   display: flex;
   gap: 0.6em;

@@ -14,6 +14,18 @@ const Answer = (props) => {
   return shouldShow ? <div className="answer">{answer}</div> : null;
 };
 
+const NotAWord = (props) => {
+  const { shouldShow, word } = props;
+
+  return shouldShow ? (
+    <div className="answer">{word} is not a known 6 letter word</div>
+  ) : null;
+};
+
+const WinModal = () => {
+  return <div className="winModal">Congrats</div>;
+};
+
 const Guess = (props) => {
   let { letters, wordLength, grade, animation } = props;
 
@@ -132,6 +144,8 @@ const App = (props) => {
   );
   const [letterMapping, setLetterMapping] = useState({});
   const [showAnswer, setShowAnswer] = useState(false);
+  const [showNotAWord, setShowNotAWord] = useState(false);
+  const [isWon, setIsWon] = useState(false);
   const [animations, setAnimations] = useState(
     new Array(maxGuesses).fill().map(() => {})
   );
@@ -191,6 +205,10 @@ const App = (props) => {
   };
 
   const enterHandler = () => {
+    if (isWon) {
+      return;
+    }
+
     if (
       currentGuess < guesses.length &&
       currentLetter === wordLength &&
@@ -205,6 +223,11 @@ const App = (props) => {
       setTimeout(() => {
         resetAnimation();
       }, 700);
+
+      setShowNotAWord(true);
+      setTimeout(() => {
+        setShowNotAWord(false);
+      }, 3000);
     }
     return;
   };
@@ -215,6 +238,11 @@ const App = (props) => {
   };
 
   const backspaceHandler = () => {
+    if (isWon) {
+      return;
+    }
+
+    animations[currentGuess] = { name: "" };
     setAnimations([...animations]);
     guesses[currentGuess][currentLetter - 1] = undefined;
     offsetLetter(-1);
@@ -222,6 +250,10 @@ const App = (props) => {
   };
 
   const handleKeyDown = (event) => {
+    if (isWon) {
+      return;
+    }
+
     const { key } = event;
     if (key === "Backspace") {
       backspaceHandler();
@@ -234,14 +266,19 @@ const App = (props) => {
       currentLetter >= wordLength ||
       currentGuess >= guesses.length
     ) {
+      animations[currentGuess] = { name: "shake" };
       return;
     }
 
+    animations[currentGuess] = { name: "" };
     guesses[currentGuess][currentLetter] = event.key.toLowerCase();
     offsetLetter(1);
   };
 
   const clickHandler = (key) => {
+    if (isWon) {
+      return;
+    }
     guesses[currentGuess][currentLetter] = key.toLowerCase();
     offsetLetter(1);
   };
@@ -259,7 +296,17 @@ const App = (props) => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [currentLetter, currentGuess]);
+  }, [currentLetter, currentGuess, handleKeyDown, isWon]);
+
+  useEffect(() => {
+    if (
+      grades?.[currentGuess - 1]?.length === wordLength &&
+      grades[currentGuess - 1].every((grade) => grade === "correct")
+    ) {
+      setShowAnswer(true);
+      setIsWon(true);
+    }
+  }, [grades, currentGuess]);
 
   return (
     <div className="App">
@@ -284,6 +331,8 @@ const App = (props) => {
         backspaceHandler={backspaceHandler}
       />
       <Answer shouldShow={showAnswer} answer={answer} />
+      <NotAWord shouldShow={showNotAWord} word={guesses[currentGuess]} />
+      {isWon && <WinModal />}
     </div>
   );
 };
